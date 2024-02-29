@@ -4,14 +4,11 @@
     $svg_default = "text-gray-400 group-hover:text-gray-500";
     $svg_current = "text-gray-500";
 @endphp
-
 <nav class="mt-10 flex-1 px-2 bg-white space-y-1">
 
-    <!-- Current: "bg-gray-100 text-gray-900", Default: "text-gray-600 hover:bg-gray-50 hover:text-gray-900" -->
     <a href="{{ route('dashboard') }}"
        class="{{ Request::segment(1)=='dashboard'? $a_current : $a_default }} group flex items-center px-2 py-2 text-sm font-medium rounded-md hover:text-gray-900 hover:bg-gray-100">
-        <!-- Current: "text-gray-500", Default: "text-gray-400 group-hover:text-gray-500" -->
-        <!-- Heroicon name: home -->
+
         <svg class="{{ Request::segment(1)=='dashboard'? $svg_current : $svg_default }} mr-3 h-6 w-6"
              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
              aria-hidden="true">
@@ -21,11 +18,8 @@
         Dashboard
     </a>
 
-    <!-- Current: "bg-gray-100 text-gray-900", Default: "text-gray-600 hover:bg-gray-50 hover:text-gray-900" -->
     <a href="{{ route('feedback.index') }}"
        class="{{ Request::segment(1)=='feedbacks'? $a_current : $a_default }} group flex items-center px-2 py-2 text-sm font-medium rounded-md hover:text-gray-900 hover:bg-gray-100">
-        <!-- Current: "text-gray-500", Default: "text-gray-400 group-hover:text-gray-500" -->
-        <!-- Heroicon name: home -->
 
         <svg class="{{ Request::segment(1)=='feedbacks'? $svg_current : $svg_default }} text-gray-400 group-hover:text-gray-500 mr-3 h-6 w-6"
             xmlns="http://www.w3.org/2000/svg"
@@ -39,3 +33,4 @@
 
 
 </nav>
+

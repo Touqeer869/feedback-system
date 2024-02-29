@@ -36,7 +36,7 @@
 
                             <div class="col-span-8 sm:col-span-2 lg:col-span-3 xl:col-span-2">
                                 <label for="user"
-                                       class="block text-sm font-medium text-gray-700">User</label>
+                                       class="block text-sm font-medium text-gray-700">User / Created By</label>
                                 <input type="text" autocomplete="off" wire:model="filters.user"
                                        class="mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                 <span class="text-xs text-gray-500">* User who submitted feedback</span>
@@ -526,30 +526,11 @@
                                         @endforeach
 
                                     @endif
-
                                     </tbody>
                                 </table>
-                                <div class="rounded-md bg-red-50 p-4">
-                                    <div class="flex">
-                                        <div class="flex-shrink-0">
-                                            <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg"
-                                                 viewBox="0 0 20 20"
-                                                 fill="currentColor" aria-hidden="true">
-                                                <path fill-rule="evenodd"
-                                                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                                                      clip-rule="evenodd"/>
-                                            </svg>
-                                        </div>
-                                        <div class="ml-3">
-                                            <h3 class="text-sm font-medium text-red-800">
-                                                No Comments yet.
-                                            </h3>
-                                        </div>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
-
 
 
                     <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
@@ -563,4 +544,5 @@
             </div>
         </div>
     </div>
+
 </div>
