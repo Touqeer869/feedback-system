@@ -15,7 +15,7 @@
             </h3>
         </div>
     </div>
-    <form wire:submit.prevent="save">
+    <form wire:submit.prevent="submitFeedback">
 
         <div class="shadow  rounded-md overflow-hidden ">
             <div class="bg-white space-y-6  rounded-t-md">

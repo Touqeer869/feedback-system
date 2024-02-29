@@ -32,7 +32,7 @@ class Add extends Component
         return view('livewire.feedback.add');
     }
 
-    public function save()
+    public function submitFeedback()
     {
         $this->feedback['user_id'] = Auth::user()->id;
         $this->validate();
