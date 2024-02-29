@@ -137,7 +137,7 @@
                     </td>
                     <td class="px-3 py-4 whitespace-nowrap text-sm font-medium">
                         <div class="flex">
-                            <a href=""
+                            <a href="javascript:void(0)"
                                class="">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      class="text-blue-500 hover:text-blue-600 cursor-pointer h-5 w-4"
@@ -147,7 +147,7 @@
                                 </svg>
                             </a>
                             <span class="mx-1 text-gray-500 font-light">|</span>
-                            <a href="#">
+                            <a href="javascript:void(0)">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      class="text-red-500 hover:text-red-600 cursor-pointer h-5 w-4"
                                      fill="none"
@@ -158,7 +158,7 @@
                             </a>
                             <span class="mx-1 text-gray-500 font-light">|</span>
 
-                            <a href="#" wire:click="commentModal('{{$feedback->feedback_id}}')">
+                            <a href="javascript:void(0)" wire:click="commentModal('{{$feedback->feedback_id}}')">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      stroke-width="1.5" stroke="currentColor"
                                      class="text-green-500 hover:text-green-600 cursor-pointer h-5 w-5">
@@ -171,19 +171,12 @@
                     </td>
 
                     <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-500">
-{{--                        @if($viewComment || $status == 'comment')--}}
-                            <a href="#" wire:click="viewModal('{{$feedback->feedback_id}}')"
-                               class="bg-green-600 border border-transparent rounded-md
+                        <a href="javascript:void(0)" wire:click="viewModal('{{$feedback->feedback_id}}')"
+                           class="bg-green-600 border border-transparent rounded-md
                            shadow-sm py-1 px-4 inline-flex justify-center text-sm font-medium text-white
                            hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600">
-                                View Comments
-                            </a>
-{{--                        @else--}}
-{{--                            <span--}}
-{{--                                class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">--}}
-{{--                            No Comments--}}
-{{--                        </span>--}}
-{{--                        @endif--}}
+                            View Comments
+                        </a>
                     </td>
                 </tr>
             @endforeach
@@ -351,7 +344,7 @@
                             <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                                 <button type="submit"
                                         class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                                        >
+                                >
                                     Add Comment
                                 </button>
                                 <button type="button"
@@ -388,7 +381,9 @@
                  x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                  x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                  x-description="Modal panel, show/hide based on modal state."
-                 class="inline-block align-bottom bg-white rounded-lg px-4 sm:p-6 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-5xl sm:w-full">
+                 class="inline-block align-bottom bg-white rounded-lg px-4 sm:p-6 pt-5 pb-4 text-left
+                 overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-5xl sm:w-full">
+
                 <div class="hidden sm:block absolute top-0 right-0 pt-4 pr-4">
                     <button type="button"
                             class="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -405,94 +400,96 @@
 
                 @if($view_modal)
                     @if(!empty($feedback_detail) && !empty($category_detail) )
-                        <form wire:submit.prevent="addComment">
-                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                                @include('include.errors')
-                                <div class="px-4 py-5 sm:px-6">
-                                    <h3 class="text-lg leading-6 font-medium text-gray-900">
-                                        Feedback Details
-                                    </h3>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            @include('include.errors')
+                            <div class="px-4 py-5 sm:px-6">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                    Feedback Details
+                                </h3>
 
-                                    <div class="grid grid-cols-6 gap-6">
-                                        <div class="col-span-6 sm:col-span-3 lg:col-span-3">
-                                            <label for="title"
-                                                   class="block text-sm font-medium text-gray-700">Title<span
-                                                    class="text-red-500">*</span></label>
-                                            <input disabled type="text" autocomplete="off"
-                                                   wire:model="feedback_detail.title"
-                                                   name="title"
-                                                   class="mt-1 block w-full bg-gray-200 border border-gray-300
+                                <div class="grid grid-cols-6 gap-6">
+                                    <div class="col-span-6 sm:col-span-3 lg:col-span-3">
+                                        <label for="title"
+                                               class="block text-sm font-medium text-gray-700">Title<span
+                                                class="text-red-500">*</span></label>
+                                        <input disabled type="text" autocomplete="off"
+                                               wire:model="feedback_detail.title"
+                                               name="title"
+                                               class="mt-1 block w-full bg-gray-200 border border-gray-300
                                    rounded-md shadow-sm py-2 px-3 focus:outline-none
                                    focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                        </div>
-                                        <div class="col-span-6 sm:col-span-3 lg:col-span-3">
-                                            <label for="category" class="block text-sm font-medium text-gray-700">Category
-                                                <span
-                                                    class="text-red-500">*</span>
-                                            </label>
-                                            <input type="text" disabled autocomplete="off"
-                                                   wire:model="category_detail.name"
-                                                   name="title"
-                                                   class="mt-1 block w-full bg-gray-200 border border-gray-300
-                                   rounded-md shadow-sm py-2 px-3 focus:outline-none
-                                   focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                        </div>
-
-                                        <div class="col-span-6 sm:col-span-3 lg:col-span-3">
-                                            <label for="description"
-                                                   class="block text-sm font-medium text-gray-700">Description
-                                                <span
-                                                    class="text-red-500">*</span>
-                                            </label>
-                                            <textarea rows="1" wire:model="feedback_detail.description"
-                                                      name="description"
-                                                      autocomplete="off" disabled
-                                                      class="mt-1 block min-w-full bg-gray-200 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                        </textarea>
-                                        </div>
-
-                                        <div class="col-span-6 sm:col-span-3 lg:col-span-3">
-                                            <label for="category" class="block text-sm font-medium text-gray-700">Created
-                                                By
-                                                <span
-                                                    class="text-red-500">*</span>
-                                            </label>
-                                            <input type="text" disabled autocomplete="off" wire:model="user.name"
-                                                   name="title"
-                                                   class="mt-1 block w-full bg-gray-200 border border-gray-300
-                                   rounded-md shadow-sm py-2 px-3 focus:outline-none
-                                   focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                        </div>
-
                                     </div>
+                                    <div class="col-span-6 sm:col-span-3 lg:col-span-3">
+                                        <label for="category" class="block text-sm font-medium text-gray-700">Category
+                                            <span
+                                                class="text-red-500">*</span>
+                                        </label>
+                                        <input type="text" disabled autocomplete="off"
+                                               wire:model="category_detail.name"
+                                               name="title"
+                                               class="mt-1 block w-full bg-gray-200 border border-gray-300
+                                   rounded-md shadow-sm py-2 px-3 focus:outline-none
+                                   focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                    </div>
+
+                                    <div class="col-span-6 sm:col-span-3 lg:col-span-3">
+                                        <label for="description"
+                                               class="block text-sm font-medium text-gray-700">Description
+                                            <span
+                                                class="text-red-500">*</span>
+                                        </label>
+                                        <textarea rows="1" wire:model="feedback_detail.description"
+                                                  name="description"
+                                                  autocomplete="off" disabled
+                                                  class="mt-1 block min-w-full bg-gray-200 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                        </textarea>
+                                    </div>
+
+                                    <div class="col-span-6 sm:col-span-3 lg:col-span-3">
+                                        <label for="category" class="block text-sm font-medium text-gray-700">Created
+                                            By
+                                            <span
+                                                class="text-red-500">*</span>
+                                        </label>
+                                        <input type="text" disabled autocomplete="off" wire:model="user.name"
+                                               name="title"
+                                               class="mt-1 block w-full bg-gray-200 border border-gray-300
+                                   rounded-md shadow-sm py-2 px-3 focus:outline-none
+                                   focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                    </div>
+
                                 </div>
+                            </div>
+                            @endif
+                            <div class="px-4 py-5 sm:px-6">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                    Comments
+                                </h3>
 
-                                <div class="px-4 py-5 sm:px-6">
-                                    <h3 class="text-lg leading-6 font-medium text-gray-900">
-                                        Comments
-                                    </h3>
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50 ">
+                                    <tr>
+                                        <th scope="col"
+                                            class="px-3 py-3 text-left text-sm font-medium text-gray-500">
+                                            #
+                                        </th>
 
-                                    <table class="min-w-full divide-y divide-gray-200">
-                                        <thead class="bg-gray-50 ">
-                                        <tr>
-                                            <th scope="col" class="px-3 py-3 text-left text-sm font-medium text-gray-500">
-                                                #
-                                            </th>
-
-                                            <th scope="col"
-                                                class="px-3 py-3 cursor-pointer text-left text-sm font-medium text-gray-500">
-                                                Comment
-                                            </th>
-                                            <th scope="col"
-                                                class="px-3 py-3 cursor-pointer text-left text-sm font-medium text-gray-500">
-                                                Created By
-                                            </th>
-                                            <th scope="col" class="px-3 py-3 text-left text-sm font-medium text-gray-500 content  ">
-                                                Created Date
-                                            </th>
-                                        </tr>
-                                        </thead>
-                                        <tbody class="bg-white divide-y divide-gray-200">
+                                        <th scope="col"
+                                            class="px-3 py-3 cursor-pointer text-left text-sm font-medium text-gray-500">
+                                            Comment
+                                        </th>
+                                        <th scope="col"
+                                            class="px-3 py-3 cursor-pointer text-left text-sm font-medium text-gray-500">
+                                            Created By
+                                        </th>
+                                        <th scope="col"
+                                            class="px-3 py-3 text-left text-sm font-medium text-gray-500 content  ">
+                                            Created Date
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                    @if(!empty($comment_detail))
                                         @foreach($comment_detail as $cd)
                                             <tr>
                                                 <td class="px-3 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -513,33 +510,56 @@
                                                                   class="flex w-full h-auto min-h-[80px] px-3 py-2 text-sm bg-white border rounded-md border-neutral-300 ring-offset-background
                                                                   placeholder:text-neutral-400 focus:border-neutral-300
                                                                   focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-400 disabled:cursor-not-allowed disabled:opacity-100"
-                                                        > {{ strip_tags($cd['comment']) }}</textarea>
+                                                        >
+                                                            {{ strip_tags($cd->comment) }}
+                                                        </textarea>
                                                     </div>
                                                 </td>
                                                 <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    {{ $cd['created_by'] }}
+                                                    {{ $cd->created_by }}
                                                 </td>
                                                 <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    {{ date('d M Y h:i A',strtotime($cd['created_at'])) }}
+                                                    {{ date('d M Y h:i A',strtotime($cd->created_at)) }}
                                                 </td>
 
                                             </tr>
                                         @endforeach
-                                        </tbody>
-                                    </table>
+
+                                    @endif
+
+                                    </tbody>
+                                </table>
+                                <div class="rounded-md bg-red-50 p-4">
+                                    <div class="flex">
+                                        <div class="flex-shrink-0">
+                                            <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg"
+                                                 viewBox="0 0 20 20"
+                                                 fill="currentColor" aria-hidden="true">
+                                                <path fill-rule="evenodd"
+                                                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                                      clip-rule="evenodd"/>
+                                            </svg>
+                                        </div>
+                                        <div class="ml-3">
+                                            <h3 class="text-sm font-medium text-red-800">
+                                                No Comments yet.
+                                            </h3>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            @endif
+                        </div>
 
-                            <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-                                <button type="button"
-                                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-                                        @click="open = false">
-                                    Cancel
-                                </button>
-                            </div>
-                        </form>
-                    @endif
+
+
+                    <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                        <button type="button"
+                                class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
+                                @click="open = false">
+                            Cancel
+                        </button>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

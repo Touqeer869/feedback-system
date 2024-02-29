@@ -23,8 +23,6 @@ class Index extends Component
 
     #[Locked]
     public $feedback_id;
-    #[Locked]
-    public $ids;
     public $comment_modal = false;
     public $view_modal = false;
     public $feedback_detail;
@@ -85,10 +83,11 @@ class Index extends Component
         $this->feedback_detail = $feedback_detail->toArray();
 
         $this->comment_detail = Comment::from('comments as c')
-            ->leftJoin('users as user','user.id','=','c.user_id')
-            ->where('feedback_id',$feedback_id)
-            ->select('user.name as created_by','c.comment','c.created_at')
-            ->get()->toArray();
+            ->leftJoin('users as user', 'user.id', '=', 'c.user_id')
+            ->where('feedback_id', $feedback_id)
+            ->select('user.name as created_by', 'c.comment', 'c.created_at')
+            ->get();
+
         $this->view_modal = true;
     }
 
@@ -110,35 +109,8 @@ class Index extends Component
             ->select('fb.id as feedback_id', 'fb.title', 'cat.name as category', 'user.name as user')
             ->paginate($this->per_page);
 
-        return view('livewire.feedback.index',[
-            'feedbacks' => $feedbacks
-        ]);
+        return view('livewire.feedback.index', ['feedbacks' => $feedbacks]);
     }
-
-//    public function rendered()
-//    {
-//        $feedbacks = Feedback::from('feedback as fb')
-//            ->leftjoin('categories as cat', 'cat.id', '=', 'fb.category_id')
-//            ->leftjoin('users as user', 'user.id', '=', 'fb.user_id')
-//            ->orderBy('fb.created_at', 'desc')
-//            ->select('fb.id as feedback_id', 'fb.title', 'cat.name as category', 'user.name as user')->get()
-//            ->toArray();
-//
-//
-//        foreach ($feedbacks as $key => $fb){
-//            $comment[] = Comment::where('feedback_id',$fb['feedback_id'])->exists();
-//            if ($comment[$key]){
-//                $this->status[] = 'comment';
-//            }
-//        }
-//
-//    }
-//    public function updatedComments($value)
-//    {
-////        dd($value);
-//        $this->viewComment = Comment::where('feedback_id',$this->feedback_id)->exists();
-//
-//    }
 
     public function addComment()
     {
