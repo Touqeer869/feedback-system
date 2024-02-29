@@ -8,7 +8,6 @@
                         <h3 class="text-lg leading-6 font-medium text-gray-900 flex items-center">
                             <span class="">Search Filters</span>
                         </h3>
-                        @include('include.errors')
 
                         <div class="grid grid-cols-10 gap-6">
                             <div class="col-span-8 sm:col-span-2 lg:col-span-3 xl:col-span-2">
@@ -116,6 +115,9 @@
                 <th scope="col" class="px-3 py-3 text-left text-sm font-medium text-gray-500 content  ">
                     Action
                 </th>
+                <th scope="col" class="px-3 py-3 text-left text-sm font-medium text-gray-500 content  ">
+                    View Comments
+                </th>
             </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
@@ -156,7 +158,7 @@
                             </a>
                             <span class="mx-1 text-gray-500 font-light">|</span>
 
-                            <a href="#" wire:click="popup('{{$feedback->feedback_id}}')">
+                            <a href="#" wire:click="commentModal('{{$feedback->feedback_id}}')">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      stroke-width="1.5" stroke="currentColor"
                                      class="text-green-500 hover:text-green-600 cursor-pointer h-5 w-5">
@@ -166,6 +168,22 @@
 
                             </a>
                         </div>
+                    </td>
+
+                    <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-500">
+{{--                        @if($viewComment || $status == 'comment')--}}
+                            <a href="#" wire:click="viewModal('{{$feedback->feedback_id}}')"
+                               class="bg-green-600 border border-transparent rounded-md
+                           shadow-sm py-1 px-4 inline-flex justify-center text-sm font-medium text-white
+                           hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600">
+                                View Comments
+                            </a>
+{{--                        @else--}}
+{{--                            <span--}}
+{{--                                class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">--}}
+{{--                            No Comments--}}
+{{--                        </span>--}}
+{{--                        @endif--}}
                     </td>
                 </tr>
             @endforeach
@@ -180,7 +198,7 @@
         @endif
     </div>
 
-    <div x-data="{ open: @entangle('modal') }" x-show="open" class="fixed z-10 inset-0 overflow-y-auto"
+    <div x-data="{ open: @entangle('comment_modal') }" x-show="open" class="fixed z-10 inset-0 overflow-y-auto"
          aria-labelledby="modal-title" x-ref="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
 
@@ -217,10 +235,11 @@
                     </button>
                 </div>
 
-                @if($modal)
+                @if($comment_modal)
                     @if(!empty($feedback_detail) && !empty($category_detail) )
                         <form wire:submit.prevent="addComment">
                             <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                @include('include.errors')
                                 <div class="px-4 py-5 sm:px-6">
                                     <h3 class="text-lg leading-6 font-medium text-gray-900">
                                         Feedback Details
@@ -298,7 +317,7 @@
                                    focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                         </div>
                                         <div class="col-span-6 sm:col-span-3 lg:col-span-3">
-                                            <label for="category" class="block text-sm font-medium text-gray-700">Date
+                                            <label for="date" class="block text-sm font-medium text-gray-700">Date
                                                 <span
                                                     class="text-red-500">*</span>
                                             </label>
@@ -307,6 +326,7 @@
                                                    class="mt-1 block w-full bg-white border border-gray-300
                                                rounded-md shadow-sm py-2 px-3 focus:outline-none
                                                focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+
                                         </div>
                                         <div class="col-span-6 sm:col-span-6 lg:col-span-6">
                                             <label for="comment" class="block text-sm font-medium text-gray-700">Comment
@@ -334,6 +354,184 @@
                                         >
                                     Add Comment
                                 </button>
+                                <button type="button"
+                                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
+                                        @click="open = false">
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    @endif
+            </div>
+        </div>
+    </div>
+
+    <div x-data="{ open: @entangle('view_modal') }" x-show="open" class="fixed z-10 inset-0 overflow-y-auto"
+         aria-labelledby="modal-title" x-ref="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+
+            <div x-show="open" x-transition:enter="ease-out duration-300"
+                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                 x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 x-description="Background overlay, show/hide based on modal state."
+                 class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="open = false"
+                 aria-hidden="true"></div>
+
+
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">​</span>
+
+            <div x-show="open" x-transition:enter="ease-out duration-300"
+                 x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                 x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave="ease-in duration-200"
+                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                 x-description="Modal panel, show/hide based on modal state."
+                 class="inline-block align-bottom bg-white rounded-lg px-4 sm:p-6 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-5xl sm:w-full">
+                <div class="hidden sm:block absolute top-0 right-0 pt-4 pr-4">
+                    <button type="button"
+                            class="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            @click="open = false">
+                        <span class="sr-only">Close</span>
+                        <svg class="h-6 w-6" x-description="Heroicon name: outline/x"
+                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                @if($view_modal)
+                    @if(!empty($feedback_detail) && !empty($category_detail) )
+                        <form wire:submit.prevent="addComment">
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                @include('include.errors')
+                                <div class="px-4 py-5 sm:px-6">
+                                    <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                        Feedback Details
+                                    </h3>
+
+                                    <div class="grid grid-cols-6 gap-6">
+                                        <div class="col-span-6 sm:col-span-3 lg:col-span-3">
+                                            <label for="title"
+                                                   class="block text-sm font-medium text-gray-700">Title<span
+                                                    class="text-red-500">*</span></label>
+                                            <input disabled type="text" autocomplete="off"
+                                                   wire:model="feedback_detail.title"
+                                                   name="title"
+                                                   class="mt-1 block w-full bg-gray-200 border border-gray-300
+                                   rounded-md shadow-sm py-2 px-3 focus:outline-none
+                                   focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                        </div>
+                                        <div class="col-span-6 sm:col-span-3 lg:col-span-3">
+                                            <label for="category" class="block text-sm font-medium text-gray-700">Category
+                                                <span
+                                                    class="text-red-500">*</span>
+                                            </label>
+                                            <input type="text" disabled autocomplete="off"
+                                                   wire:model="category_detail.name"
+                                                   name="title"
+                                                   class="mt-1 block w-full bg-gray-200 border border-gray-300
+                                   rounded-md shadow-sm py-2 px-3 focus:outline-none
+                                   focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                        </div>
+
+                                        <div class="col-span-6 sm:col-span-3 lg:col-span-3">
+                                            <label for="description"
+                                                   class="block text-sm font-medium text-gray-700">Description
+                                                <span
+                                                    class="text-red-500">*</span>
+                                            </label>
+                                            <textarea rows="1" wire:model="feedback_detail.description"
+                                                      name="description"
+                                                      autocomplete="off" disabled
+                                                      class="mt-1 block min-w-full bg-gray-200 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                        </textarea>
+                                        </div>
+
+                                        <div class="col-span-6 sm:col-span-3 lg:col-span-3">
+                                            <label for="category" class="block text-sm font-medium text-gray-700">Created
+                                                By
+                                                <span
+                                                    class="text-red-500">*</span>
+                                            </label>
+                                            <input type="text" disabled autocomplete="off" wire:model="user.name"
+                                                   name="title"
+                                                   class="mt-1 block w-full bg-gray-200 border border-gray-300
+                                   rounded-md shadow-sm py-2 px-3 focus:outline-none
+                                   focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="px-4 py-5 sm:px-6">
+                                    <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                        Comments
+                                    </h3>
+
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50 ">
+                                        <tr>
+                                            <th scope="col" class="px-3 py-3 text-left text-sm font-medium text-gray-500">
+                                                #
+                                            </th>
+
+                                            <th scope="col"
+                                                class="px-3 py-3 cursor-pointer text-left text-sm font-medium text-gray-500">
+                                                Comment
+                                            </th>
+                                            <th scope="col"
+                                                class="px-3 py-3 cursor-pointer text-left text-sm font-medium text-gray-500">
+                                                Created By
+                                            </th>
+                                            <th scope="col" class="px-3 py-3 text-left text-sm font-medium text-gray-500 content  ">
+                                                Created Date
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200">
+                                        @foreach($comment_detail as $cd)
+                                            <tr>
+                                                <td class="px-3 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                    {{ $loop->iteration }}
+                                                </td>
+                                                <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-500">
+
+                                                    <div class="w-full max-w-xs mx-auto">
+                                                        <textarea disabled x-data="{
+                                                                        resize () {
+                                                                            $el.style.height = '0px';
+                                                                            $el.style.height = $el.scrollHeight + 'px'
+                                                                        }
+                                                                    }"
+                                                                  x-init="resize()"
+                                                                  @input="resize()"
+                                                                  type="text"
+                                                                  class="flex w-full h-auto min-h-[80px] px-3 py-2 text-sm bg-white border rounded-md border-neutral-300 ring-offset-background
+                                                                  placeholder:text-neutral-400 focus:border-neutral-300
+                                                                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-400 disabled:cursor-not-allowed disabled:opacity-100"
+                                                        > {{ strip_tags($cd['comment']) }}</textarea>
+                                                    </div>
+                                                </td>
+                                                <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    {{ $cd['created_by'] }}
+                                                </td>
+                                                <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    {{ date('d M Y h:i A',strtotime($cd['created_at'])) }}
+                                                </td>
+
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            @endif
+
+                            <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                                 <button type="button"
                                         class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
                                         @click="open = false">
